@@ -2,106 +2,90 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
-    private const USERS = [
-        ['id' => 1, 'name' => 'Anton Ivanov', 'email' => 'anton@example.com'],
-        ['id' => 2, 'name' => 'Kateryna Snihur', 'email' => 'kateryna@example.com'],
-        ['id' => 3, 'name' => 'Andrii Boiko', 'email' => 'andrii@example.com'],
-    ];
-
-    private function findUser(int $id): ?array
+    private function notFound(string $entity, int $id): JsonResponse
     {
-        foreach (self::USERS as $user) {
-            if ($user['id'] === $id) {
-                return $user;
-            }
-        }
-        return null;
+        return response()->json(['error' => "$entity with id $id not found"], Response::HTTP_NOT_FOUND);
     }
 
-    private function notFound(int $id): JsonResponse
-    {
-        return response()->json(['data' => ['error' => "User with id $id not found"]], Response::HTTP_NOT_FOUND);
-    }
-
-    /**
-     * @return JsonResponse
-     */
     public function getUsers(): JsonResponse
     {
-        return response()->json(['data' => self::USERS], Response::HTTP_OK);
+        return response()->json(['data' => User::all()], Response::HTTP_OK);
     }
 
-    /**
-     * @param int $id
-     * @return JsonResponse
-     */
     public function getUserItem(int $id): JsonResponse
     {
-        $user = $this->findUser($id);
+        $user = User::find($id);
         if (!$user) {
-            return $this->notFound($id);
+            return $this->notFound('User', $id);
         }
 
         return response()->json(['data' => $user], Response::HTTP_OK);
     }
 
-    /**
-     * @param $request Request
-     * @return JsonResponse
-     */
     public function createUser(Request $request): JsonResponse
     {
-        $requestData = json_decode($request->getContent(), true) ?? [];
-        if (empty($requestData['name']) || empty($requestData['email'])) {
-            return response()->json(['data' => ['error' => 'name and email are required']], Response::HTTP_BAD_REQUEST);
+        $data = $request->all();
+
+        if (empty($data['name']) || empty($data['email']) || empty($data['password'])) {
+            return response()->json(['error' => 'name, email and password are required'], Response::HTTP_BAD_REQUEST);
         }
 
-        $newUserData = [
-            'id' => max(array_column(self::USERS, 'id')) + 1,
-            'name' => $requestData['name'],
-            'email' => $requestData['email'],
-        ];
+        if (User::where('email', $data['email'])->exists()) {
+            return response()->json(['error' => 'Email already exists'], Response::HTTP_CONFLICT);
+        }
 
-        return response()->json(['data' => $newUserData], Response::HTTP_CREATED);
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => $data['password'],
+        ]);
+
+        return response()->json(['data' => $user], Response::HTTP_CREATED);
     }
 
-    /**
-     * @param $id int
-     * @param $request Request
-     * @return JsonResponse
-     */
     public function updateUser(int $id, Request $request): JsonResponse
     {
-        $user = $this->findUser($id);
+        $user = User::find($id);
         if (!$user) {
-            return $this->notFound($id);
+            return $this->notFound('User', $id);
         }
 
-        $requestData = json_decode($request->getContent(), true) ?? [];
-        $user['name'] = $requestData['name'] ?? $user['name'];
-        $user['email'] = $requestData['email'] ?? $user['email'];
+        $data = $request->all();
+
+        if (isset($data['email']) && $data['email'] !== $user->email) {
+            if (User::where('email', $data['email'])->exists()) {
+                return response()->json(['error' => 'Email already exists'], Response::HTTP_CONFLICT);
+            }
+            $user->email = $data['email'];
+        }
+        if (isset($data['name'])) {
+            $user->name = $data['name'];
+        }
+        if (isset($data['password'])) {
+            $user->password = $data['password'];
+        }
+
+        $user->save();
 
         return response()->json(['data' => $user], Response::HTTP_OK);
     }
 
-    /**
-     * @param $id int
-     * @return JsonResponse
-     */
     public function deleteUser(int $id): JsonResponse
     {
-        $user = $this->findUser($id);
+        $user = User::find($id);
         if (!$user) {
-            return $this->notFound($id);
+            return $this->notFound('User', $id);
         }
 
-        // TODO remove user from db
+        $user->delete();
+
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 }

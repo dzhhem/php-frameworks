@@ -15,6 +15,14 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->preventRequestForgery(except: [
             'users',
             'users/*',
+            'posts',
+            'posts/*',
+            'comments',
+            'comments/*',
+            'likes',
+            'likes/*',
+            'follows',
+            'follows/*',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
