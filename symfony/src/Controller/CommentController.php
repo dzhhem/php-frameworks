@@ -17,11 +17,19 @@ final class CommentController extends AbstractController {
     {
     }
 
+    /**
+     * @param string $entity
+     * @param int $id
+     * @return JsonResponse
+     */
     private function notFound(string $entity, int $id): JsonResponse
     {
         return $this->json(['error' => "$entity with id $id not found"], Response::HTTP_NOT_FOUND);
     }
 
+    /**
+     * @return JsonResponse
+     */
     #[Route('/comments', name: 'get_comments', methods: [Request::METHOD_GET])]
     public function getComments(): JsonResponse
     {
@@ -30,6 +38,10 @@ final class CommentController extends AbstractController {
         return $this->json(['data' => $comments], Response::HTTP_OK);
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     #[Route('/comments/{id}', name: 'get_comment_item', requirements: ['id' => '\d+'], methods: [Request::METHOD_GET])]
     public function getCommentItem(int $id): JsonResponse
     {
@@ -41,6 +53,10 @@ final class CommentController extends AbstractController {
         return $this->json(['data' => $comment], Response::HTTP_OK);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     #[Route('/comments', name: 'create_comment', methods: [Request::METHOD_POST])]
     public function createComment(Request $request): JsonResponse
     {
@@ -70,6 +86,11 @@ final class CommentController extends AbstractController {
         return $this->json(['data' => $comment], Response::HTTP_CREATED);
     }
 
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return JsonResponse
+     */
     #[Route('/comments/{id}', name: 'update_comment', requirements: ['id' => '\d+'], methods: [Request::METHOD_PATCH])]
     public function updateComment(int $id, Request $request): JsonResponse
     {
@@ -89,6 +110,10 @@ final class CommentController extends AbstractController {
         return $this->json(['data' => $comment], Response::HTTP_OK);
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     #[Route('/comments/{id}', name: 'delete_comment', requirements: ['id' => '\d+'], methods: [Request::METHOD_DELETE])]
     public function deleteComment(int $id): JsonResponse
     {

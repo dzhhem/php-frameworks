@@ -21,16 +21,26 @@ class Follow implements JsonSerializable
     #[ORM\JoinColumn(name: 'following_id', nullable: false, onDelete: 'CASCADE')]
     private ?User $following = null;
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return User|null
+     */
     public function getFollower(): ?User
     {
         return $this->follower;
     }
 
+    /**
+     * @param User|null $follower
+     * @return static
+     */
     public function setFollower(?User $follower): static
     {
         $this->follower = $follower;
@@ -38,11 +48,18 @@ class Follow implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return User|null
+     */
     public function getFollowing(): ?User
     {
         return $this->following;
     }
 
+    /**
+     * @param User|null $following
+     * @return static
+     */
     public function setFollowing(?User $following): static
     {
         $this->following = $following;
@@ -50,6 +67,9 @@ class Follow implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function jsonSerialize(): array
     {
         return [

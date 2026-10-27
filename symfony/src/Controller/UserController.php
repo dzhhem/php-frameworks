@@ -16,11 +16,18 @@ final class UserController extends AbstractController
     {
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     private function notFound(int $id): JsonResponse
     {
         return $this->json(['error' => "User with id $id not found"], Response::HTTP_NOT_FOUND);
     }
 
+    /**
+     * @return JsonResponse
+     */
     #[Route('/users', name: 'get_users', methods: [Request::METHOD_GET])]
     public function getUsers(): JsonResponse
     {
@@ -29,6 +36,10 @@ final class UserController extends AbstractController
         return $this->json(['data' => $users], Response::HTTP_OK);
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     #[Route('/users/{id}', name: 'get_user_item', requirements: ['id' => '\d+'], methods: [Request::METHOD_GET])]
     public function getUserItem(int $id): JsonResponse
     {
@@ -40,6 +51,10 @@ final class UserController extends AbstractController
         return $this->json(['data' => $user], Response::HTTP_OK);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     #[Route('/users', name: 'create_user', methods: [Request::METHOD_POST])]
     public function createUser(Request $request): JsonResponse
     {
@@ -64,6 +79,11 @@ final class UserController extends AbstractController
         return $this->json(['data' => $user], Response::HTTP_CREATED);
     }
 
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return JsonResponse
+     */
     #[Route('/users/{id}', name: 'update_user', requirements: ['id' => '\d+'], methods: [Request::METHOD_PATCH])]
     public function updateUser(int $id, Request $request): JsonResponse
     {
@@ -92,6 +112,10 @@ final class UserController extends AbstractController
         return $this->json(['data' => $user], Response::HTTP_OK);
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     #[Route('/users/{id}', name: 'delete_user', requirements: ['id' => '\d+'], methods: [Request::METHOD_DELETE])]
     public function deleteUser(int $id): JsonResponse
     {

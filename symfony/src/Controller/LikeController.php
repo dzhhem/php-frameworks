@@ -17,11 +17,19 @@ final class LikeController extends AbstractController {
     {
     }
 
+    /**
+     * @param string $entity
+     * @param int $id
+     * @return JsonResponse
+     */
     private function notFound(string $entity, int $id): JsonResponse
     {
         return $this->json(['error' => "$entity with id $id not found"], Response::HTTP_NOT_FOUND);
     }
 
+    /**
+     * @return JsonResponse
+     */
     #[Route('/likes', name: 'get_likes', methods: [Request::METHOD_GET])]
     public function getLikes(): JsonResponse
     {
@@ -30,6 +38,10 @@ final class LikeController extends AbstractController {
         return $this->json(['data' => $likes], Response::HTTP_OK);
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     #[Route('/likes/{id}', name: 'get_like_item', requirements: ['id' => '\d+'], methods: [Request::METHOD_GET])]
     public function getLikeItem(int $id): JsonResponse
     {
@@ -41,6 +53,10 @@ final class LikeController extends AbstractController {
         return $this->json(['data' => $like], Response::HTTP_OK);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     #[Route('/likes', name: 'create_like', methods: [Request::METHOD_POST])]
     public function createLike(Request $request): JsonResponse
     {
@@ -73,6 +89,11 @@ final class LikeController extends AbstractController {
         return $this->json(['data' => $like], Response::HTTP_CREATED);
     }
 
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return JsonResponse
+     */
     #[Route('/likes/{id}', name: 'update_like', requirements: ['id' => '\d+'], methods: [Request::METHOD_PATCH])]
     public function updateLike(int $id, Request $request): JsonResponse
     {
@@ -101,6 +122,10 @@ final class LikeController extends AbstractController {
         return $this->json(['data' => $like], Response::HTTP_OK);
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     #[Route('/likes/{id}', name: 'delete_like', requirements: ['id' => '\d+'], methods: [Request::METHOD_DELETE])]
     public function deleteLike(int $id): JsonResponse
     {

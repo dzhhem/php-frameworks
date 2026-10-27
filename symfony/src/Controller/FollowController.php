@@ -16,11 +16,19 @@ final class FollowController extends AbstractController {
     {
     }
 
+    /**
+     * @param string $entity
+     * @param int $id
+     * @return JsonResponse
+     */
     private function notFound(string $entity, int $id): JsonResponse
     {
         return $this->json(['error' => "$entity with id $id not found"], Response::HTTP_NOT_FOUND);
     }
 
+    /**
+     * @return JsonResponse
+     */
     #[Route('/follows', name: 'get_follows', methods: [Request::METHOD_GET])]
     public function getFollows(): JsonResponse
     {
@@ -29,6 +37,10 @@ final class FollowController extends AbstractController {
         return $this->json(['data' => $follows], Response::HTTP_OK);
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     #[Route('/follows/{id}', name: 'get_follow_item', requirements: ['id' => '\d+'], methods: [Request::METHOD_GET])]
     public function getFollowItem(int $id): JsonResponse
     {
@@ -40,6 +52,10 @@ final class FollowController extends AbstractController {
         return $this->json(['data' => $follow], Response::HTTP_OK);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     #[Route('/follows', name: 'create_follow', methods: [Request::METHOD_POST])]
     public function createFollow(Request $request): JsonResponse
     {
@@ -72,6 +88,11 @@ final class FollowController extends AbstractController {
         return $this->json(['data' => $follow], Response::HTTP_CREATED);
     }
 
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return JsonResponse
+     */
     #[Route('/follows/{id}', name: 'update_follow', requirements: ['id' => '\d+'], methods: [Request::METHOD_PATCH])]
     public function updateFollow(int $id, Request $request): JsonResponse
     {
@@ -100,6 +121,10 @@ final class FollowController extends AbstractController {
         return $this->json(['data' => $follow], Response::HTTP_OK);
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     #[Route('/follows/{id}', name: 'delete_follow', requirements: ['id' => '\d+'], methods: [Request::METHOD_DELETE])]
     public function deleteFollow(int $id): JsonResponse
     {

@@ -16,11 +16,19 @@ final class PostController extends AbstractController {
     {
     }
 
+    /**
+     * @param string $entity
+     * @param int $id
+     * @return JsonResponse
+     */
     private function notFound(string $entity, int $id): JsonResponse
     {
         return $this->json(['error' => "$entity with id $id not found"], Response::HTTP_NOT_FOUND);
     }
 
+    /**
+     * @return JsonResponse
+     */
     #[Route('/posts', name: 'get_posts', methods: [Request::METHOD_GET])]
     public function getPosts(): JsonResponse
     {
@@ -29,6 +37,10 @@ final class PostController extends AbstractController {
         return $this->json(['data' => $posts], Response::HTTP_OK);
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     #[Route('/posts/{id}', name: 'get_post_item', requirements: ['id' => '\d+'], methods: [Request::METHOD_GET])]
     public function getPostItem(int $id): JsonResponse
     {
@@ -40,6 +52,10 @@ final class PostController extends AbstractController {
         return $this->json(['data' => $post], Response::HTTP_OK);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     #[Route('/posts', name: 'create_post', methods: [Request::METHOD_POST])]
     public function createPost(Request $request): JsonResponse
     {
@@ -65,6 +81,11 @@ final class PostController extends AbstractController {
         return $this->json(['data' => $post], Response::HTTP_CREATED);
     }
 
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return JsonResponse
+     */
     #[Route('/posts/{id}', name: 'update_post', requirements: ['id' => '\d+'], methods: [Request::METHOD_PATCH])]
     public function updatePost(int $id, Request $request): JsonResponse
     {
@@ -87,6 +108,10 @@ final class PostController extends AbstractController {
         return $this->json(['data' => $post], Response::HTTP_OK);
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     #[Route('/posts/{id}', name: 'delete_post', requirements: ['id' => '\d+'], methods: [Request::METHOD_DELETE])]
     public function deletePost(int $id): JsonResponse
     {

@@ -21,16 +21,26 @@ class Like implements JsonSerializable
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Post $post = null;
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
+    /**
+     * @param User|null $user
+     * @return static
+     */
     public function setUser(?User $user): static
     {
         $this->user = $user;
@@ -38,11 +48,18 @@ class Like implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return Post|null
+     */
     public function getPost(): ?Post
     {
         return $this->post;
     }
 
+    /**
+     * @param Post|null $post
+     * @return static
+     */
     public function setPost(?Post $post): static
     {
         $this->post = $post;
@@ -50,6 +67,9 @@ class Like implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function jsonSerialize(): array
     {
         return [

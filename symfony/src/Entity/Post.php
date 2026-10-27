@@ -31,16 +31,26 @@ class Post implements JsonSerializable
         $this->createdAt = new DateTimeImmutable();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
+    /**
+     * @param string $title
+     * @return static
+     */
     public function setTitle(string $title): static
     {
         $this->title = $title;
@@ -48,11 +58,18 @@ class Post implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getContent(): ?string
     {
         return $this->content;
     }
 
+    /**
+     * @param string $content
+     * @return static
+     */
     public function setContent(string $content): static
     {
         $this->content = $content;
@@ -60,11 +77,18 @@ class Post implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return DateTimeImmutable|null
+     */
     public function getCreatedAt(): ?DateTimeImmutable
     {
         return $this->createdAt;
     }
 
+    /**
+     * @param DateTimeImmutable $createdAt
+     * @return static
+     */
     public function setCreatedAt(DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
@@ -72,11 +96,18 @@ class Post implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
+    /**
+     * @param User|null $user
+     * @return static
+     */
     public function setUser(?User $user): static
     {
         $this->user = $user;
@@ -84,6 +115,9 @@ class Post implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function jsonSerialize(): array
     {
         return [
