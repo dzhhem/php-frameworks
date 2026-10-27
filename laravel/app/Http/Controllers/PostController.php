@@ -10,16 +10,28 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PostController extends Controller
 {
+    /**
+     * @param string $entity
+     * @param int $id
+     * @return JsonResponse
+     */
     private function notFound(string $entity, int $id): JsonResponse
     {
         return response()->json(['error' => "$entity with id $id not found"], Response::HTTP_NOT_FOUND);
     }
 
+    /**
+     * @return JsonResponse
+     */
     public function getPosts(): JsonResponse
     {
         return response()->json(['data' => Post::all()], Response::HTTP_OK);
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     public function getPostItem(int $id): JsonResponse
     {
         $post = Post::find($id);
@@ -30,6 +42,10 @@ class PostController extends Controller
         return response()->json(['data' => $post], Response::HTTP_OK);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function createPost(Request $request): JsonResponse
     {
         $data = $request->all();
@@ -52,6 +68,11 @@ class PostController extends Controller
         return response()->json(['data' => $post], Response::HTTP_CREATED);
     }
 
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function updatePost(int $id, Request $request): JsonResponse
     {
         $post = Post::find($id);
@@ -73,6 +94,10 @@ class PostController extends Controller
         return response()->json(['data' => $post], Response::HTTP_OK);
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     public function deletePost(int $id): JsonResponse
     {
         $post = Post::find($id);

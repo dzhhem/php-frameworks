@@ -11,16 +11,28 @@ use Symfony\Component\HttpFoundation\Response;
 
 class LikeController extends Controller
 {
+    /**
+     * @param string $entity
+     * @param int $id
+     * @return JsonResponse
+     */
     private function notFound(string $entity, int $id): JsonResponse
     {
         return response()->json(['error' => "$entity with id $id not found"], Response::HTTP_NOT_FOUND);
     }
 
+    /**
+     * @return JsonResponse
+     */
     public function getLikes(): JsonResponse
     {
         return response()->json(['data' => Like::all()], Response::HTTP_OK);
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     public function getLikeItem(int $id): JsonResponse
     {
         $like = Like::find($id);
@@ -31,6 +43,10 @@ class LikeController extends Controller
         return response()->json(['data' => $like], Response::HTTP_OK);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function createLike(Request $request): JsonResponse
     {
         $data = $request->all();
@@ -60,6 +76,11 @@ class LikeController extends Controller
         return response()->json(['data' => $like], Response::HTTP_CREATED);
     }
 
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function updateLike(int $id, Request $request): JsonResponse
     {
         $like = Like::find($id);
@@ -87,6 +108,10 @@ class LikeController extends Controller
         return response()->json(['data' => $like], Response::HTTP_OK);
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     public function deleteLike(int $id): JsonResponse
     {
         $like = Like::find($id);

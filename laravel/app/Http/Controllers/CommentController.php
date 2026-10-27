@@ -11,16 +11,28 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CommentController extends Controller
 {
+    /**
+     * @param string $entity
+     * @param int $id
+     * @return JsonResponse
+     */
     private function notFound(string $entity, int $id): JsonResponse
     {
         return response()->json(['error' => "$entity with id $id not found"], Response::HTTP_NOT_FOUND);
     }
 
+    /**
+     * @return JsonResponse
+     */
     public function getComments(): JsonResponse
     {
         return response()->json(['data' => Comment::all()], Response::HTTP_OK);
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     public function getCommentItem(int $id): JsonResponse
     {
         $comment = Comment::find($id);
@@ -31,6 +43,10 @@ class CommentController extends Controller
         return response()->json(['data' => $comment], Response::HTTP_OK);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function createComment(Request $request): JsonResponse
     {
         $data = $request->all();
@@ -57,6 +73,11 @@ class CommentController extends Controller
         return response()->json(['data' => $comment], Response::HTTP_CREATED);
     }
 
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function updateComment(int $id, Request $request): JsonResponse
     {
         $comment = Comment::find($id);
@@ -75,6 +96,10 @@ class CommentController extends Controller
         return response()->json(['data' => $comment], Response::HTTP_OK);
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     public function deleteComment(int $id): JsonResponse
     {
         $comment = Comment::find($id);

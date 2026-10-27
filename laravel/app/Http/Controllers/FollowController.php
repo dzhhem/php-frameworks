@@ -10,16 +10,28 @@ use Symfony\Component\HttpFoundation\Response;
 
 class FollowController extends Controller
 {
+    /**
+     * @param string $entity
+     * @param int $id
+     * @return JsonResponse
+     */
     private function notFound(string $entity, int $id): JsonResponse
     {
         return response()->json(['error' => "$entity with id $id not found"], Response::HTTP_NOT_FOUND);
     }
 
+    /**
+     * @return JsonResponse
+     */
     public function getFollows(): JsonResponse
     {
         return response()->json(['data' => Follow::all()], Response::HTTP_OK);
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     public function getFollowItem(int $id): JsonResponse
     {
         $follow = Follow::find($id);
@@ -30,6 +42,10 @@ class FollowController extends Controller
         return response()->json(['data' => $follow], Response::HTTP_OK);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function createFollow(Request $request): JsonResponse
     {
         $data = $request->all();
@@ -59,6 +75,11 @@ class FollowController extends Controller
         return response()->json(['data' => $follow], Response::HTTP_CREATED);
     }
 
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function updateFollow(int $id, Request $request): JsonResponse
     {
         $follow = Follow::find($id);
@@ -86,6 +107,10 @@ class FollowController extends Controller
         return response()->json(['data' => $follow], Response::HTTP_OK);
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     public function deleteFollow(int $id): JsonResponse
     {
         $follow = Follow::find($id);

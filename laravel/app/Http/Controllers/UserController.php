@@ -9,16 +9,28 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
+    /**
+     * @param string $entity
+     * @param int $id
+     * @return JsonResponse
+     */
     private function notFound(string $entity, int $id): JsonResponse
     {
         return response()->json(['error' => "$entity with id $id not found"], Response::HTTP_NOT_FOUND);
     }
 
+    /**
+     * @return JsonResponse
+     */
     public function getUsers(): JsonResponse
     {
         return response()->json(['data' => User::all()], Response::HTTP_OK);
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     public function getUserItem(int $id): JsonResponse
     {
         $user = User::find($id);
@@ -29,6 +41,10 @@ class UserController extends Controller
         return response()->json(['data' => $user], Response::HTTP_OK);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function createUser(Request $request): JsonResponse
     {
         $data = $request->all();
@@ -50,6 +66,11 @@ class UserController extends Controller
         return response()->json(['data' => $user], Response::HTTP_CREATED);
     }
 
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function updateUser(int $id, Request $request): JsonResponse
     {
         $user = User::find($id);
@@ -77,6 +98,10 @@ class UserController extends Controller
         return response()->json(['data' => $user], Response::HTTP_OK);
     }
 
+    /**
+     * @param int $id
+     * @return JsonResponse
+     */
     public function deleteUser(int $id): JsonResponse
     {
         $user = User::find($id);
